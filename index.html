@@ -1122,6 +1122,7 @@
         revealedHelp: 0,
         done: 0,
         right: 0,
+        isAnswered: false,
       };
 
       const SUPERSCRIPT_DIGITS = new Set(["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"]);
@@ -1135,9 +1136,8 @@
         if (SUPERSCRIPT_DIGITS.has(token)) {
           const chars = Array.from(cur);
           const last = chars[chars.length - 1] ?? "";
-          if (SUPERSCRIPT_DIGITS.has(last)) {
-            chars[chars.length - 1] = token;
-            setAnswerValue(chars.join(""));
+          if (SUPERSCRIPT_DIGITS.has(last) || last === "^") {
+            setAnswerValue(cur + token);
             return;
           }
         }
@@ -1186,10 +1186,11 @@
           { label: "⁵", insert: "⁵" },
           { label: "清空", action: "clear", kind: "danger" },
           { label: "0", insert: "0", wide: true },
-          { label: " ", insert: "" },
-          { label: " ", insert: "" },
-          { label: " ", insert: "" },
-          { label: " ", insert: "" },
+          { label: "^", insert: "^" },
+          { label: "⁶", insert: "⁶" },
+          { label: "⁷", insert: "⁷" },
+          { label: "⁸", insert: "⁸" },
+          { label: "⁹", insert: "⁹" },
         ];
 
         els.keypadGrid.innerHTML = "";
@@ -1214,6 +1215,15 @@
         els.status.textContent = text;
         els.status.classList.remove("good", "bad");
         if (kind) els.status.classList.add(kind);
+      }
+
+      function toggleKeypad(disabled) {
+        const buttons = document.querySelectorAll(".keypad button");
+        for (const b of buttons) {
+          b.disabled = disabled;
+        }
+        els.checkBtn.disabled = disabled;
+        els.revealBtn.disabled = disabled;
       }
 
       function updateStats() {
@@ -1243,6 +1253,7 @@
         const level = Number(els.levelSelect.value);
         state.current = makeProblem(level);
         state.revealedHelp = 0;
+        state.isAnswered = false;
         els.prompt.innerHTML = state.current.prompt;
         setAnswerValue("");
         els.answerInput.focus();
@@ -1250,21 +1261,26 @@
         els.help2Btn.disabled = true;
         renderHelp();
         buildKeypad(level);
+        toggleKeypad(false);
         typesetMath();
       }
 
       function checkAnswer() {
-        if (!state.current) return;
+        if (!state.current || state.isAnswered) return;
         const parsed = parsePolynomial(els.answerInput.value);
         if (!parsed.ok) {
           setStatus(`${parsed.error}\n${parsed.error.startsWith("请输入") ? "Please enter an answer." : ""}`.trim(), "bad");
           return;
         }
-        state.done += 1;
+        
         if (polyEquals(parsed.poly, state.current.answer)) {
+          state.done += 1;
           state.right += 1;
+          state.isAnswered = true;
           setStatus("正确！可以点击“下一题”继续。\nCorrect! Click “Next” to continue.", "good");
+          toggleKeypad(true);
         } else {
+          state.done += 1;
           setStatus("不太对，再试一次；也可以点“需要提示？”查看更多步骤。\nNot quite. Try again, or use the hints.", "bad");
         }
         updateStats();
