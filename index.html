@@ -90,14 +90,22 @@
         box-shadow: var(--shadow);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
       }
       .panel-inner {
         padding: 24px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
       }
       .row {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 24px;
+        align-items: stretch;
       }
       @media (max-width: 900px) {
         .row {
@@ -196,7 +204,10 @@
         border: 1px solid var(--border);
         border-radius: var(--radius-md);
         padding: 20px;
-        height: 100%;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
       }
       .label {
         color: var(--accent);
@@ -1131,6 +1142,7 @@
         done: 0,
         right: 0,
         isAnswered: false,
+        usedHelp: false,
       };
 
       const SUPERSCRIPT_DIGITS = new Set(["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"]);
@@ -1262,6 +1274,7 @@
         state.current = makeProblem(level);
         state.revealedHelp = 0;
         state.isAnswered = false;
+        state.usedHelp = false;
         els.prompt.innerHTML = state.current.prompt;
         setAnswerValue("");
         els.answerInput.focus();
@@ -1283,9 +1296,13 @@
         
         if (polyEquals(parsed.poly, state.current.answer)) {
           state.done += 1;
-          state.right += 1;
+          if (!state.usedHelp) {
+            state.right += 1;
+            setStatus("正确！可以点击“下一题”继续。\nCorrect! Click “Next” to continue.", "good");
+          } else {
+            setStatus("作答正确！但由于使用了提示，本题不计入正确率。\nCorrect! (Not counted towards accuracy due to using hints)", "good");
+          }
           state.isAnswered = true;
-          setStatus("正确！可以点击“下一题”继续。\nCorrect! Click “Next” to continue.", "good");
           toggleKeypad(true);
         } else {
           state.done += 1;
@@ -1296,6 +1313,7 @@
 
       function revealFull() {
         if (!state.current) return;
+        state.usedHelp = true;
         state.revealedHelp = 2;
         renderHelp();
         els.status.innerHTML = `<div>参考答案</div><div class="en">Answer</div><div style="margin-top:8px">${displayMath(state.current.fullLatex)}</div>`;
@@ -1307,10 +1325,12 @@
       els.newBtn.addEventListener("click", newProblem);
       els.levelSelect.addEventListener("change", newProblem);
       els.help1Btn.addEventListener("click", () => {
+        state.usedHelp = true;
         state.revealedHelp = Math.max(state.revealedHelp, 1);
         renderHelp();
       });
       els.help2Btn.addEventListener("click", () => {
+        state.usedHelp = true;
         state.revealedHelp = 2;
         renderHelp();
       });
