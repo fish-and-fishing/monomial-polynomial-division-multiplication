@@ -1,0 +1,1327 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>整式乘除法练习（双语 + 数学符号）</title>
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"]],
+        },
+        options: {
+          skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+        },
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+      :root {
+        --bg-start: #0f172a;
+        --bg-end: #1e293b;
+        --panel: rgba(255, 255, 255, 0.05);
+        --panel-2: rgba(255, 255, 255, 0.08);
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --border: rgba(255, 255, 255, 0.1);
+        --border-hover: rgba(255, 255, 255, 0.2);
+        --good: #10b981;
+        --good-bg: rgba(16, 185, 129, 0.15);
+        --bad: #ef4444;
+        --bad-bg: rgba(239, 68, 68, 0.15);
+        --accent: #3b82f6;
+        --accent-bg: rgba(59, 130, 246, 0.15);
+        --accent-hover: #2563eb;
+        --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --radius-lg: 20px;
+        --radius-md: 14px;
+        --radius-sm: 10px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        color: var(--text);
+        background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+        min-height: 100vh;
+        padding: 32px 16px 60px;
+        line-height: 1.5;
+      }
+      .wrap {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      header {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        padding: 0 8px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        background: linear-gradient(to right, #fff, #94a3b8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .sub {
+        margin-top: 8px;
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .en {
+        color: rgba(148, 163, 184, 0.8);
+        font-size: 0.9em;
+        margin-top: 2px;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .panel-inner {
+        padding: 24px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+      @media (max-width: 900px) {
+        .row {
+          grid-template-columns: 1fr;
+        }
+      }
+      .controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+      select,
+      input {
+        border: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.2);
+        color: var(--text);
+        border-radius: var(--radius-sm);
+        padding: 10px 14px;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      input:focus, select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+      }
+      input {
+        width: 100%;
+        font-size: 16px;
+        letter-spacing: 0.5px;
+      }
+      select {
+        padding-right: 36px;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+      }
+      button {
+        cursor: pointer;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        user-select: none;
+        border: 1px solid var(--border);
+        background: var(--panel-2);
+        color: var(--text);
+        border-radius: var(--radius-sm);
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: var(--shadow-sm);
+      }
+      button:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--border-hover);
+        transform: translateY(-1px);
+      }
+      button:active:not(:disabled) {
+        transform: translateY(1px);
+        box-shadow: none;
+      }
+      button.primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: white;
+      }
+      button.primary:hover:not(:disabled) {
+        background: var(--accent-hover);
+        border-color: var(--accent-hover);
+      }
+      button.good {
+        border-color: var(--good);
+        background: var(--good-bg);
+        color: var(--good);
+      }
+      button.good:hover:not(:disabled) {
+        background: rgba(16, 185, 129, 0.25);
+      }
+      button.bad {
+        border-color: var(--bad);
+        background: var(--bad-bg);
+        color: #fca5a5;
+      }
+      button.bad:hover:not(:disabled) {
+        background: rgba(239, 68, 68, 0.25);
+      }
+      button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .card {
+        background: rgba(0, 0, 0, 0.15);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 20px;
+        height: 100%;
+      }
+      .label {
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .label::before {
+        content: '';
+        display: block;
+        width: 4px;
+        height: 12px;
+        background: var(--accent);
+        border-radius: 2px;
+      }
+      .prompt {
+        font-size: 20px;
+        line-height: 1.5;
+        word-break: break-word;
+        padding: 16px 0;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+      }
+      .prompt code {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border);
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      }
+      .help {
+        margin-top: 16px;
+        border-top: 1px solid var(--border);
+        padding-top: 16px;
+      }
+      .help-steps {
+        display: grid;
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .step {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 14px 16px;
+        background: rgba(255, 255, 255, 0.03);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+      .step strong {
+        color: var(--accent);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: block;
+        margin-bottom: 8px;
+      }
+      .status {
+        margin-top: 16px;
+        font-size: 15px;
+        line-height: 1.6;
+        white-space: pre-line;
+        padding: 12px 16px;
+        border-radius: var(--radius-sm);
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid transparent;
+        transition: all 0.3s ease;
+      }
+      .status:empty {
+        display: none;
+      }
+      .status.good {
+        color: #34d399;
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.2);
+      }
+      .status.bad {
+        color: #f87171;
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.2);
+      }
+      .mini {
+        margin-top: 16px;
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.6;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+      .statline {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+      .pill {
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 6px 14px;
+        background: var(--panel-2);
+        font-size: 13px;
+        color: #e2e8f0;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .pill span {
+        font-weight: 600;
+        color: white;
+      }
+      .kbd {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 12px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border);
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: #e2e8f0;
+      }
+      .bi-label {
+        display: grid;
+        gap: 2px;
+      }
+      .bi-label .zh {
+        font-size: 13px;
+        color: #cbd5e1;
+        font-weight: 500;
+      }
+      .bi-label .en {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .btn-bi {
+        display: grid;
+        gap: 2px;
+        align-items: center;
+        justify-items: center;
+        text-align: center;
+      }
+      .btn-bi .en {
+        font-size: 11px;
+        opacity: 0.8;
+        font-weight: 400;
+      }
+      .keypad {
+        display: grid;
+        gap: 12px;
+        margin: 16px 0;
+        padding: 16px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border);
+      }
+      .keypad-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+      .keypad-grid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .keypad button {
+        width: 100%;
+        padding: 12px 8px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .keypad button:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      .keypad button:active:not(:disabled) {
+        transform: translateY(0);
+      }
+      .keypad-row button {
+        width: auto;
+        min-width: 48px;
+        padding: 10px 16px;
+        font-weight: 600;
+        color: var(--accent);
+        background: rgba(59, 130, 246, 0.1);
+        border-color: rgba(59, 130, 246, 0.2);
+      }
+      .keypad-row button:hover:not(:disabled) {
+        background: rgba(59, 130, 246, 0.2);
+        border-color: rgba(59, 130, 246, 0.4);
+      }
+      .keypad button.wide {
+        grid-column: span 2;
+      }
+      .keypad button.danger {
+        border-color: rgba(239, 68, 68, 0.3);
+        background: rgba(239, 68, 68, 0.1);
+        color: #fca5a5;
+      }
+      .keypad button.danger:hover:not(:disabled) {
+        background: rgba(239, 68, 68, 0.2);
+        border-color: rgba(239, 68, 68, 0.5);
+      }
+      .keypad button.neutral {
+        border-color: var(--border);
+        background: rgba(0, 0, 0, 0.2);
+      }
+      .keypad button.neutral:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .answer-readonly {
+        caret-color: transparent;
+        background: rgba(0, 0, 0, 0.3);
+        border: 2px solid var(--border);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 18px;
+        padding: 14px 16px;
+        text-align: center;
+      }
+      .answer-readonly:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <h1>整式的乘除法练习（3 个级别 + 分步帮助）</h1>
+          <div class="sub">
+            题目与提示用正式数学符号显示；作答用下方按键点击输入（支持 <span class="kbd">x²</span> 上标，也支持 <span class="kbd">^</span> 幂）。
+            <div class="en">
+              Problems and hints use standard math notation. Use the keypad below to input answers (supports superscripts like <span class="kbd">x²</span> and also <span class="kbd">^</span> for powers).
+            </div>
+          </div>
+        </div>
+        <div class="controls">
+          <label>
+            <span class="bi-label"><span class="zh">级别</span><span class="en">Level</span></span><br />
+            <select id="levelSelect" aria-label="选择级别">
+              <option value="1">Level 1（基础） / Basic</option>
+              <option value="2">Level 2（进阶） / Intermediate</option>
+              <option value="3">Level 3（提升） / Advanced</option>
+            </select>
+          </label>
+          <button id="newBtn" class="primary" type="button">
+            <span class="btn-bi"><span>下一题</span><span class="en">Next</span></span>
+          </button>
+        </div>
+      </header>
+
+      <div class="row">
+        <div class="panel">
+          <div class="panel-inner">
+            <div class="card">
+              <div class="label">题目 / Problem</div>
+              <div class="prompt" id="prompt"></div>
+              <div class="help">
+                <div class="controls" style="justify-content: flex-start">
+                  <button id="help1Btn" type="button">
+                    <span class="btn-bi"><span>需要提示？</span><span class="en">Need help?</span></span>
+                  </button>
+                  <button id="help2Btn" type="button" disabled>
+                    <span class="btn-bi"><span>更多提示？</span><span class="en">Need more help?</span></span>
+                  </button>
+                  <button id="resetHelpBtn" type="button">
+                    <span class="btn-bi"><span>清空提示</span><span class="en">Clear</span></span>
+                  </button>
+                </div>
+                <div class="help-steps" id="helpSteps"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-inner">
+            <div class="card">
+              <div class="label">作答 / Answer</div>
+              <div style="display: grid; gap: 10px; margin-top: 8px">
+                <input
+                  id="answerInput"
+                  class="answer-readonly"
+                  placeholder="点击下方按键输入 / Tap buttons below"
+                  autocomplete="off"
+                  readonly
+                />
+                <div class="keypad" aria-label="作答键盘 / Answer keypad">
+                  <div class="keypad-row" id="keypadVars"></div>
+                  <div class="keypad-grid" id="keypadGrid"></div>
+                </div>
+                <div class="controls" style="justify-content: flex-start">
+                  <button id="checkBtn" class="good" type="button">
+                    <span class="btn-bi"><span>检查</span><span class="en">Check</span></span>
+                  </button>
+                  <button id="revealBtn" class="bad" type="button">
+                    <span class="btn-bi"><span>我卡住了（看完整解）</span><span class="en">Show full solution</span></span>
+                  </button>
+                </div>
+              </div>
+              <div id="status" class="status"></div>
+              <div class="statline">
+                <div class="pill">已做 / Done：<span id="doneCount">0</span></div>
+                <div class="pill">正确 / Correct：<span id="rightCount">0</span></div>
+                <div class="pill">正确率 / Accuracy：<span id="accRate">0%</span></div>
+              </div>
+              <div class="mini" id="formatTip">
+                用下方按键输入：先写系数，再点字母；幂用上标（如 x²）。多项式用 + / − 连接各项。
+                <div class="en">Use the keypad below: type coefficient first, then variables; use superscripts for powers (e.g., x²). Use + / − between terms.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const VARIABLES_BY_LEVEL = {
+        1: ["x", "y", "a", "b"],
+        2: ["x", "y", "a", "b", "m", "n"],
+        3: ["x", "y", "a", "b", "m", "n"],
+      };
+
+      function randInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function pick(arr) {
+        return arr[randInt(0, arr.length - 1)];
+      }
+
+      function gcd(a, b) {
+        let x = Math.abs(a);
+        let y = Math.abs(b);
+        while (y !== 0) {
+          const t = x % y;
+          x = y;
+          y = t;
+        }
+        return x;
+      }
+
+      function cloneVars(vars) {
+        const out = {};
+        for (const k of Object.keys(vars)) out[k] = vars[k];
+        return out;
+      }
+
+      function varsKey(vars) {
+        const parts = Object.keys(vars)
+          .filter((v) => vars[v] !== 0)
+          .sort()
+          .map((v) => `${v}^${vars[v]}`);
+        return parts.join("*");
+      }
+
+      function monomialToKey(m) {
+        return varsKey(m.vars);
+      }
+
+      function normalizePolynomialMap(polyMap) {
+        const out = new Map();
+        for (const [k, c] of polyMap.entries()) {
+          if (c !== 0) out.set(k, c);
+        }
+        return out;
+      }
+
+      function addToPoly(polyMap, key, coeff) {
+        const prev = polyMap.get(key) ?? 0;
+        const next = prev + coeff;
+        if (next === 0) polyMap.delete(key);
+        else polyMap.set(key, next);
+      }
+
+      function makeMonomial(coeff, vars) {
+        return { coeff, vars };
+      }
+
+      function multiplyMonomial(a, b) {
+        const vars = cloneVars(a.vars);
+        for (const v of Object.keys(b.vars)) {
+          vars[v] = (vars[v] ?? 0) + b.vars[v];
+        }
+        return makeMonomial(a.coeff * b.coeff, vars);
+      }
+
+      function divideMonomial(a, b) {
+        const vars = cloneVars(a.vars);
+        for (const v of Object.keys(b.vars)) {
+          vars[v] = (vars[v] ?? 0) - b.vars[v];
+        }
+        return makeMonomial(a.coeff / b.coeff, vars);
+      }
+
+      function monomialToText(m) {
+        const coeff = m.coeff;
+        const vars = Object.keys(m.vars)
+          .filter((v) => m.vars[v] !== 0)
+          .sort()
+          .map((v) => {
+            const e = m.vars[v];
+            return e === 1 ? v : `${v}^${e}`;
+          })
+          .join("");
+        if (vars.length === 0) return String(coeff);
+        if (coeff === 1) return vars;
+        if (coeff === -1) return `-${vars}`;
+        return `${coeff}${vars}`;
+      }
+
+      function monomialToLatex(m) {
+        const coeff = m.coeff;
+        const vars = Object.keys(m.vars)
+          .filter((v) => m.vars[v] !== 0)
+          .sort()
+          .map((v) => {
+            const e = m.vars[v];
+            return e === 1 ? v : `${v}^{${e}}`;
+          })
+          .join("");
+        if (vars.length === 0) return String(coeff);
+        if (coeff === 1) return vars;
+        if (coeff === -1) return `-${vars}`;
+        return `${coeff}${vars}`;
+      }
+
+      function polyToText(polyMap) {
+        const terms = [];
+        for (const [key, coeff] of polyMap.entries()) {
+          terms.push({ key, coeff });
+        }
+        terms.sort((a, b) => {
+          const da = degreeFromKey(a.key);
+          const db = degreeFromKey(b.key);
+          if (db !== da) return db - da;
+          return a.key.localeCompare(b.key);
+        });
+        if (terms.length === 0) return "0";
+        let out = "";
+        for (let i = 0; i < terms.length; i++) {
+          const { key, coeff } = terms[i];
+          const vars = keyToVarsText(key);
+          const abs = Math.abs(coeff);
+          const sign = coeff < 0 ? "-" : "+";
+          let termText = "";
+          if (key === "") termText = String(abs);
+          else {
+            if (abs === 1) termText = vars;
+            else termText = `${abs}${vars}`;
+          }
+          if (i === 0) out += coeff < 0 ? `-${termText}` : termText;
+          else out += `${sign}${termText}`;
+        }
+        return out;
+      }
+
+      function polyToLatex(polyMap) {
+        const terms = [];
+        for (const [key, coeff] of polyMap.entries()) {
+          terms.push({ key, coeff });
+        }
+        terms.sort((a, b) => {
+          const da = degreeFromKey(a.key);
+          const db = degreeFromKey(b.key);
+          if (db !== da) return db - da;
+          return a.key.localeCompare(b.key);
+        });
+        if (terms.length === 0) return "0";
+        let out = "";
+        for (let i = 0; i < terms.length; i++) {
+          const { key, coeff } = terms[i];
+          const vars = keyToVarsLatex(key);
+          const abs = Math.abs(coeff);
+          const sign = coeff < 0 ? "-" : "+";
+          let termText = "";
+          if (key === "") termText = String(abs);
+          else {
+            if (abs === 1) termText = vars;
+            else termText = `${abs}${vars}`;
+          }
+          if (i === 0) out += coeff < 0 ? `-${termText}` : termText;
+          else out += ` ${sign} ${termText}`;
+        }
+        return out;
+      }
+
+      function keyToVarsText(key) {
+        if (!key) return "";
+        const parts = key.split("*").filter(Boolean);
+        const vars = parts
+          .map((p) => {
+            const [v, eStr] = p.split("^");
+            const e = Number(eStr);
+            return e === 1 ? v : `${v}^${e}`;
+          })
+          .sort((a, b) => a.localeCompare(b))
+          .join("");
+        return vars;
+      }
+
+      function keyToVarsLatex(key) {
+        if (!key) return "";
+        const parts = key.split("*").filter(Boolean);
+        const vars = parts
+          .map((p) => {
+            const [v, eStr] = p.split("^");
+            const e = Number(eStr);
+            return e === 1 ? v : `${v}^{${e}}`;
+          })
+          .sort((a, b) => a.localeCompare(b))
+          .join("");
+        return vars;
+      }
+
+      function inlineMath(latex) {
+        return `\\(${latex}\\)`;
+      }
+
+      function displayMath(latex) {
+        return `\\[${latex}\\]`;
+      }
+
+      let typesetPending = false;
+      function typesetMath() {
+        if (!window.MathJax || !window.MathJax.typesetPromise) return;
+        if (typesetPending) return;
+        typesetPending = true;
+        window.MathJax.typesetPromise()
+          .catch(() => {})
+          .finally(() => {
+            typesetPending = false;
+          });
+      }
+
+      function degreeFromKey(key) {
+        if (!key) return 0;
+        return key
+          .split("*")
+          .filter(Boolean)
+          .reduce((sum, p) => sum + Number(p.split("^")[1] ?? 0), 0);
+      }
+
+      function multiplyPolyByMonomial(polyMap, m) {
+        const out = new Map();
+        for (const [key, coeff] of polyMap.entries()) {
+          const vars = keyToVarsObj(key);
+          const mm = makeMonomial(coeff, vars);
+          const prod = multiplyMonomial(mm, m);
+          addToPoly(out, monomialToKey(prod), prod.coeff);
+        }
+        return out;
+      }
+
+      function dividePolyByMonomial(polyMap, m) {
+        const out = new Map();
+        for (const [key, coeff] of polyMap.entries()) {
+          const vars = keyToVarsObj(key);
+          const mm = makeMonomial(coeff, vars);
+          const div = divideMonomial(mm, m);
+          addToPoly(out, monomialToKey(div), div.coeff);
+        }
+        return out;
+      }
+
+      function keyToVarsObj(key) {
+        const vars = {};
+        if (!key) return vars;
+        const parts = key.split("*").filter(Boolean);
+        for (const p of parts) {
+          const [v, eStr] = p.split("^");
+          vars[v] = Number(eStr);
+        }
+        return vars;
+      }
+
+      function polyEquals(a, b) {
+        const na = normalizePolynomialMap(a);
+        const nb = normalizePolynomialMap(b);
+        if (na.size !== nb.size) return false;
+        for (const [k, c] of na.entries()) {
+          if ((nb.get(k) ?? 0) !== c) return false;
+        }
+        return true;
+      }
+
+      function parsePolynomial(input) {
+        const raw = String(input ?? "").trim();
+        if (!raw) return { ok: false, error: "请输入答案。", poly: new Map() };
+
+        let s = raw.replace(/\s+/g, "");
+        s = s.replace(/×/g, "*");
+        s = s.replace(/[·⋅]/g, "*");
+        s = s.replace(/（/g, "(").replace(/）/g, ")");
+        s = s.replace(/\^\{(\d+)\}/g, "^$1");
+        s = s.replace(/[{}]/g, "");
+        s = s.replace(/([a-zA-Z])([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (_, v, sup) => {
+          const digits = String(sup)
+            .split("")
+            .map((ch) => "⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(ch))
+            .join("");
+          return `${v}^${digits}`;
+        });
+        if (s === "") return { ok: false, error: "请输入答案。", poly: new Map() };
+
+        const parts = [];
+        let buf = "";
+        for (let i = 0; i < s.length; i++) {
+          const ch = s[i];
+          if ((ch === "+" || ch === "-") && i !== 0) {
+            parts.push(buf);
+            buf = ch;
+          } else {
+            buf += ch;
+          }
+        }
+        if (buf) parts.push(buf);
+
+        const poly = new Map();
+        for (const part of parts) {
+          const { ok, error, key, coeff } = parseTerm(part);
+          if (!ok) return { ok: false, error, poly: new Map() };
+          addToPoly(poly, key, coeff);
+        }
+        return { ok: true, error: "", poly };
+      }
+
+      function parseTerm(termRaw) {
+        let t = termRaw;
+        if (!t) return { ok: false, error: "答案格式有问题：出现空项。", key: "", coeff: 0 };
+
+        let sign = 1;
+        if (t[0] === "+") t = t.slice(1);
+        else if (t[0] === "-") {
+          sign = -1;
+          t = t.slice(1);
+        }
+
+        while (t.startsWith("(") && t.endsWith(")") && t.length >= 2) {
+          t = t.slice(1, -1);
+        }
+        if (t === "") return { ok: false, error: "答案格式有问题：出现空项。", key: "", coeff: 0 };
+
+        let i = 0;
+        let coeff = 1;
+        if (isDigit(t[i])) {
+          let num = "";
+          while (i < t.length && isDigit(t[i])) {
+            num += t[i];
+            i++;
+          }
+          coeff = Number(num);
+        }
+        coeff *= sign;
+
+        const vars = {};
+        while (i < t.length) {
+          const ch = t[i];
+          if (ch === "*") {
+            i++;
+            continue;
+          }
+          if (ch === "(" || ch === ")") return { ok: false, error: "暂不支持括号运算，请输入最终最简结果。\nParentheses are not supported in input. Please enter the simplified result.", key: "", coeff: 0 };
+          if (!isLetter(ch)) return { ok: false, error: `无法识别字符：${ch}`, key: "", coeff: 0 };
+
+          const v = ch;
+          i++;
+          let exp = 1;
+          if (t[i] === "^") {
+            i++;
+            if (i >= t.length || !isDigit(t[i])) return { ok: false, error: "幂的写法有问题。\nInvalid exponent format.", key: "", coeff: 0 };
+            let e = "";
+            while (i < t.length && isDigit(t[i])) {
+              e += t[i];
+              i++;
+            }
+            exp = Number(e);
+          }
+          vars[v] = (vars[v] ?? 0) + exp;
+        }
+
+        const key = varsKey(vars);
+        return { ok: true, error: "", key, coeff };
+      }
+
+      function isDigit(ch) {
+        return ch >= "0" && ch <= "9";
+      }
+
+      function isLetter(ch) {
+        return (ch >= "a" && ch <= "z") || (ch >= "A" && ch <= "Z");
+      }
+
+      function randomMonomial(level, options = {}) {
+        const vars = {};
+        const available = VARIABLES_BY_LEVEL[level];
+        const varCount = randInt(options.minVars ?? 1, options.maxVars ?? (level === 1 ? 2 : 3));
+        const picked = new Set();
+        while (picked.size < varCount) picked.add(pick(available));
+        for (const v of picked) {
+          const expMax = options.expMax ?? (level === 1 ? 3 : 4);
+          vars[v] = randInt(1, expMax);
+        }
+        const coeffAbsMin = options.coeffAbsMin ?? 2;
+        const coeffAbsMax = options.coeffAbsMax ?? (level === 1 ? 9 : 12);
+        const coeffAbs = randInt(coeffAbsMin, coeffAbsMax);
+        const coeff = (options.allowNegative ?? true) && Math.random() < 0.35 ? -coeffAbs : coeffAbs;
+        return makeMonomial(coeff, vars);
+      }
+
+      function randomPolynomial(level, options = {}) {
+        const terms = randInt(options.minTerms ?? 2, options.maxTerms ?? (level === 2 ? 3 : 4));
+        const poly = new Map();
+        for (let i = 0; i < terms; i++) {
+          const mono = randomMonomial(level, {
+            minVars: options.minVarsPerTerm ?? 1,
+            maxVars: options.maxVarsPerTerm ?? (level === 2 ? 2 : 3),
+            expMax: options.expMax ?? (level === 2 ? 3 : 4),
+            coeffAbsMin: 1,
+            coeffAbsMax: options.coeffAbsMax ?? (level === 2 ? 9 : 12),
+            allowNegative: true,
+          });
+          addToPoly(poly, monomialToKey(mono), mono.coeff);
+        }
+        if (poly.size === 0) {
+          const mono = randomMonomial(level, { minVars: 1, maxVars: 1, coeffAbsMin: 1, coeffAbsMax: 9, allowNegative: true });
+          addToPoly(poly, monomialToKey(mono), mono.coeff);
+        }
+        return poly;
+      }
+
+      function makeProblem(level) {
+        const typeRoll = Math.random();
+        if (level === 1) {
+          if (typeRoll < 0.55) return problemMultiplyMonomials(level);
+          return problemDivideMonomials(level);
+        }
+        if (level === 2) {
+          if (typeRoll < 0.5) return problemMonomialTimesPolynomial(level);
+          return problemPolynomialDivMonomial(level, { hard: false });
+        }
+        if (typeRoll < 0.34) return problemMultiplyMonomials(level, { hard: true });
+        if (typeRoll < 0.67) return problemMonomialTimesPolynomial(level, { hard: true });
+        return problemPolynomialDivMonomial(level, { hard: true });
+      }
+
+      function problemMultiplyMonomials(level, options = {}) {
+        const a = randomMonomial(level, { minVars: 1, maxVars: options.hard ? 3 : 2, expMax: options.hard ? 4 : 3 });
+        const b = randomMonomial(level, { minVars: 1, maxVars: options.hard ? 3 : 2, expMax: options.hard ? 4 : 3 });
+        const prod = multiplyMonomial(a, b);
+        const poly = new Map();
+        addToPoly(poly, monomialToKey(prod), prod.coeff);
+
+        const prompt = [
+          `<div>计算：</div>`,
+          
+          `<div style="margin-top: 8px">${displayMath(`\\left(${monomialToLatex(a)}\\right)\\cdot\\left(${monomialToLatex(b)}\\right)`)}</div>`,
+        ].join("");
+        const help1 = [
+          `<div>把单项式相乘：先乘系数，再把同底数的幂相乘（指数相加）。</div>`,
+          `<div class="en">Multiply monomials: multiply coefficients, then add exponents of like bases.</div>`,
+        ].join("");
+        const help2 = [
+          `<div>系数：</div><div>${displayMath(`${a.coeff}\\times${b.coeff}=${a.coeff * b.coeff}`)}</div>`,
+          `<div class="en">Coefficients:</div>`,
+          `<div>字母：同字母指数相加</div><div class="en">Variables: add exponents of the same letter</div>`,
+          `<div>结果：</div><div>${displayMath(polyToLatex(poly))}</div>`,
+          `<div class="en">Result:</div>`,
+        ].join("");
+        return { level, prompt, answer: poly, helps: [help1, help2], fullLatex: polyToLatex(poly) };
+      }
+
+      function problemDivideMonomials(level, options = {}) {
+        const base = randomMonomial(level, { minVars: 1, maxVars: options.hard ? 3 : 2, expMax: options.hard ? 5 : 4 });
+        const divisorVars = {};
+        for (const v of Object.keys(base.vars)) {
+          const maxTake = Math.max(1, base.vars[v] - (options.hard ? 0 : 1));
+          divisorVars[v] = randInt(1, maxTake);
+        }
+        const divisorCoeffAbs = pick([2, 3, 4, 5, 6]);
+        const g = gcd(Math.abs(base.coeff), divisorCoeffAbs);
+        const divisorCoeff = divisorCoeffAbs / g;
+        const adjustedBaseCoeff = base.coeff * divisorCoeff;
+
+        const dividend = makeMonomial(adjustedBaseCoeff, base.vars);
+        const divisor = makeMonomial(divisorCoeff, divisorVars);
+        const quotient = divideMonomial(dividend, divisor);
+
+        const poly = new Map();
+        addToPoly(poly, monomialToKey(quotient), quotient.coeff);
+
+        const prompt = [
+          `<div>计算：</div>`,
+          
+          `<div style="margin-top: 8px">${displayMath(`\\left(${monomialToLatex(dividend)}\\right)\\div\\left(${monomialToLatex(divisor)}\\right)`)}</div>`,
+        ].join("");
+        const help1 = [
+          `<div>单项式相除：系数相除；同底数幂相除（指数相减）。</div>`,
+          `<div class="en">Divide monomials: divide coefficients; subtract exponents of like bases.</div>`,
+        ].join("");
+        const help2 = [
+          `<div>系数：</div><div>${displayMath(`${dividend.coeff}\\div${divisor.coeff}=${quotient.coeff}`)}</div>`,
+          `<div class="en">Coefficients:</div>`,
+          `<div>字母：同字母指数相减</div><div class="en">Variables: subtract exponents of the same letter</div>`,
+          `<div>结果：</div><div>${displayMath(polyToLatex(poly))}</div>`,
+          `<div class="en">Result:</div>`,
+        ].join("");
+        return { level, prompt, answer: poly, helps: [help1, help2], fullLatex: polyToLatex(poly) };
+      }
+
+      function problemMonomialTimesPolynomial(level, options = {}) {
+        const m = randomMonomial(level, { minVars: 1, maxVars: options.hard ? 3 : 2, expMax: options.hard ? 4 : 3 });
+        const p = randomPolynomial(level, {
+          minTerms: options.hard ? 3 : 2,
+          maxTerms: options.hard ? 4 : 3,
+          expMax: options.hard ? 4 : 3,
+          coeffAbsMax: options.hard ? 12 : 9,
+        });
+        const result = multiplyPolyByMonomial(p, m);
+
+        const prompt = [
+          `<div>计算：</div>`,
+          
+          `<div style="margin-top: 8px">${displayMath(`\\left(${monomialToLatex(m)}\\right)\\cdot\\left(${polyToLatex(p)}\\right)`)}</div>`,
+        ].join("");
+        const help1 = [
+          `<div>用分配律：先用单项式分别乘多项式的每一项，然后合并同类项。</div>`,
+          `<div class="en">Use the distributive property: multiply the monomial by each term, then combine like terms.</div>`,
+        ].join("");
+        const expandLines = [];
+        for (const [k, c] of p.entries()) {
+          const term = makeMonomial(c, keyToVarsObj(k));
+          const prod = multiplyMonomial(term, m);
+          expandLines.push(displayMath(`${monomialToLatex(m)}\\times${monomialToLatex(term)}=${monomialToLatex(prod)}`));
+        }
+        const help2 = [
+          `<div>逐项相乘：</div><div class="en">Multiply term by term:</div>`,
+          expandLines.join(""),
+          `<div>合并同类项：</div><div class="en">Combine like terms:</div>`,
+          `<div>${displayMath(polyToLatex(result))}</div>`,
+        ].join("");
+        return { level, prompt, answer: result, helps: [help1, help2], fullLatex: polyToLatex(result) };
+      }
+
+      function problemPolynomialDivMonomial(level, options = {}) {
+        const divisor = randomMonomial(level, { minVars: 1, maxVars: options.hard ? 3 : 2, expMax: options.hard ? 4 : 3 });
+        const p = randomPolynomial(level, {
+          minTerms: options.hard ? 3 : 2,
+          maxTerms: options.hard ? 4 : 3,
+          expMax: options.hard ? 4 : 3,
+          coeffAbsMax: options.hard ? 12 : 9,
+        });
+
+        const adjusted = new Map();
+        for (const [k, c] of p.entries()) {
+          const vars = keyToVarsObj(k);
+          for (const v of Object.keys(divisor.vars)) {
+            vars[v] = (vars[v] ?? 0) + divisor.vars[v];
+          }
+          const coeffAbs = Math.abs(c);
+          const g = gcd(coeffAbs, Math.abs(divisor.coeff));
+          const mul = Math.abs(divisor.coeff) / g;
+          const newCoeff = c * mul;
+          const newKey = varsKey(vars);
+          addToPoly(adjusted, newKey, newCoeff);
+        }
+
+        const result = dividePolyByMonomial(adjusted, divisor);
+        const prompt = [
+          `<div>计算：</div>`,
+          `<div style="margin-top: 8px">${displayMath(`\\left(${polyToLatex(adjusted)}\\right)\\div\\left(${monomialToLatex(divisor)}\\right)`)}</div>`,
+        ].join("");
+        const help1 = [
+          `<div>多项式 ÷ 单项式：把多项式的每一项分别除以这个单项式，再合并同类项（如果有）。</div>`,
+          `<div class="en">Polynomial ÷ monomial: divide each term by the monomial, then combine like terms (if any).</div>`,
+        ].join("");
+        const lines = [];
+        for (const [k, c] of adjusted.entries()) {
+          const term = makeMonomial(c, keyToVarsObj(k));
+          const div = divideMonomial(term, divisor);
+          lines.push(displayMath(`${monomialToLatex(term)}\\div${monomialToLatex(divisor)}=${monomialToLatex(div)}`));
+        }
+        const help2 = [
+          `<div>逐项相除：</div><div class="en">Divide term by term:</div>`,
+          lines.join(""),
+          `<div>合并同类项：</div><div class="en">Combine like terms:</div>`,
+          `<div>${displayMath(polyToLatex(result))}</div>`,
+        ].join("");
+        return { level, prompt, answer: result, helps: [help1, help2], fullLatex: polyToLatex(result) };
+      }
+
+      const els = {
+        levelSelect: document.getElementById("levelSelect"),
+        newBtn: document.getElementById("newBtn"),
+        prompt: document.getElementById("prompt"),
+        help1Btn: document.getElementById("help1Btn"),
+        help2Btn: document.getElementById("help2Btn"),
+        resetHelpBtn: document.getElementById("resetHelpBtn"),
+        helpSteps: document.getElementById("helpSteps"),
+        answerInput: document.getElementById("answerInput"),
+        keypadVars: document.getElementById("keypadVars"),
+        keypadGrid: document.getElementById("keypadGrid"),
+        checkBtn: document.getElementById("checkBtn"),
+        revealBtn: document.getElementById("revealBtn"),
+        status: document.getElementById("status"),
+        doneCount: document.getElementById("doneCount"),
+        rightCount: document.getElementById("rightCount"),
+        accRate: document.getElementById("accRate"),
+      };
+
+      const state = {
+        current: null,
+        revealedHelp: 0,
+        done: 0,
+        right: 0,
+      };
+
+      const SUPERSCRIPT_DIGITS = new Set(["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"]);
+
+      function setAnswerValue(next) {
+        els.answerInput.value = next;
+      }
+
+      function appendToken(token) {
+        const cur = els.answerInput.value ?? "";
+        if (SUPERSCRIPT_DIGITS.has(token)) {
+          const chars = Array.from(cur);
+          const last = chars[chars.length - 1] ?? "";
+          if (SUPERSCRIPT_DIGITS.has(last)) {
+            chars[chars.length - 1] = token;
+            setAnswerValue(chars.join(""));
+            return;
+          }
+        }
+        setAnswerValue(cur + token);
+      }
+
+      function backspaceAnswer() {
+        const chars = Array.from(els.answerInput.value ?? "");
+        chars.pop();
+        setAnswerValue(chars.join(""));
+      }
+
+      function clearAnswer() {
+        setAnswerValue("");
+      }
+
+      function buildKeypad(level) {
+        els.keypadVars.innerHTML = "";
+        const vars = VARIABLES_BY_LEVEL[level] ?? [];
+        for (const v of vars) {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "neutral";
+          b.textContent = v;
+          b.dataset.insert = v;
+          els.keypadVars.appendChild(b);
+        }
+
+        const buttons = [
+          { label: "7", insert: "7" },
+          { label: "8", insert: "8" },
+          { label: "9", insert: "9" },
+          { label: "+", insert: "+" },
+          { label: "−", insert: "-" },
+          { label: "⌫", action: "backspace", kind: "danger" },
+          { label: "4", insert: "4" },
+          { label: "5", insert: "5" },
+          { label: "6", insert: "6" },
+          { label: "×", insert: "×" },
+          { label: "²", insert: "²" },
+          { label: "³", insert: "³" },
+          { label: "1", insert: "1" },
+          { label: "2", insert: "2" },
+          { label: "3", insert: "3" },
+          { label: "⁴", insert: "⁴" },
+          { label: "⁵", insert: "⁵" },
+          { label: "清空", action: "clear", kind: "danger" },
+          { label: "0", insert: "0", wide: true },
+          { label: " ", insert: "" },
+          { label: " ", insert: "" },
+          { label: " ", insert: "" },
+          { label: " ", insert: "" },
+        ];
+
+        els.keypadGrid.innerHTML = "";
+        for (const cfg of buttons) {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.textContent = cfg.label;
+          if (cfg.wide) b.classList.add("wide");
+          if (cfg.kind === "danger") b.classList.add("danger");
+          else b.classList.add("neutral");
+          if (cfg.action) b.dataset.action = cfg.action;
+          if (cfg.insert !== undefined) b.dataset.insert = cfg.insert;
+          if (cfg.label.trim() === "" && cfg.insert === "") {
+            b.disabled = true;
+            b.style.opacity = "0";
+          }
+          els.keypadGrid.appendChild(b);
+        }
+      }
+
+      function setStatus(text, kind) {
+        els.status.textContent = text;
+        els.status.classList.remove("good", "bad");
+        if (kind) els.status.classList.add(kind);
+      }
+
+      function updateStats() {
+        els.doneCount.textContent = String(state.done);
+        els.rightCount.textContent = String(state.right);
+        const rate = state.done === 0 ? 0 : Math.round((state.right / state.done) * 100);
+        els.accRate.textContent = `${rate}%`;
+      }
+
+      function renderHelp() {
+        els.helpSteps.innerHTML = "";
+        if (!state.current) return;
+        const steps = [];
+        if (state.revealedHelp >= 1) steps.push({ title: "提示 1 / Hint 1", html: state.current.helps[0] });
+        if (state.revealedHelp >= 2) steps.push({ title: "提示 2 / Hint 2", html: state.current.helps[1] });
+        for (const step of steps) {
+          const div = document.createElement("div");
+          div.className = "step";
+          div.innerHTML = `<strong>${step.title}</strong><div style="margin-top:6px; color: rgba(255,255,255,0.85); line-height:1.55">${step.html}</div>`;
+          els.helpSteps.appendChild(div);
+        }
+        els.help2Btn.disabled = state.revealedHelp < 1;
+        typesetMath();
+      }
+
+      function newProblem() {
+        const level = Number(els.levelSelect.value);
+        state.current = makeProblem(level);
+        state.revealedHelp = 0;
+        els.prompt.innerHTML = state.current.prompt;
+        setAnswerValue("");
+        els.answerInput.focus();
+        setStatus("", "");
+        els.help2Btn.disabled = true;
+        renderHelp();
+        buildKeypad(level);
+        typesetMath();
+      }
+
+      function checkAnswer() {
+        if (!state.current) return;
+        const parsed = parsePolynomial(els.answerInput.value);
+        if (!parsed.ok) {
+          setStatus(`${parsed.error}\n${parsed.error.startsWith("请输入") ? "Please enter an answer." : ""}`.trim(), "bad");
+          return;
+        }
+        state.done += 1;
+        if (polyEquals(parsed.poly, state.current.answer)) {
+          state.right += 1;
+          setStatus("正确！可以点击“下一题”继续。\nCorrect! Click “Next” to continue.", "good");
+        } else {
+          setStatus("不太对，再试一次；也可以点“需要提示？”查看更多步骤。\nNot quite. Try again, or use the hints.", "bad");
+        }
+        updateStats();
+      }
+
+      function revealFull() {
+        if (!state.current) return;
+        state.revealedHelp = 2;
+        renderHelp();
+        els.status.innerHTML = `<div>参考答案</div><div class="en">Answer</div><div style="margin-top:8px">${displayMath(state.current.fullLatex)}</div>`;
+        els.status.classList.remove("good");
+        els.status.classList.add("bad");
+        typesetMath();
+      }
+
+      els.newBtn.addEventListener("click", newProblem);
+      els.levelSelect.addEventListener("change", newProblem);
+      els.help1Btn.addEventListener("click", () => {
+        state.revealedHelp = Math.max(state.revealedHelp, 1);
+        renderHelp();
+      });
+      els.help2Btn.addEventListener("click", () => {
+        state.revealedHelp = 2;
+        renderHelp();
+      });
+      els.resetHelpBtn.addEventListener("click", () => {
+        state.revealedHelp = 0;
+        renderHelp();
+      });
+      els.checkBtn.addEventListener("click", checkAnswer);
+      els.revealBtn.addEventListener("click", revealFull);
+      els.keypadVars.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn || btn.disabled) return;
+        const insert = btn.dataset.insert;
+        if (insert === undefined) return;
+        appendToken(insert);
+      });
+      els.keypadGrid.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn || btn.disabled) return;
+        const action = btn.dataset.action;
+        if (action === "backspace") {
+          backspaceAnswer();
+          return;
+        }
+        if (action === "clear") {
+          clearAnswer();
+          return;
+        }
+        const insert = btn.dataset.insert;
+        if (insert === undefined) return;
+        appendToken(insert);
+      });
+
+      newProblem();
+      updateStats();
+    </script>
+  </body>
+</html>
